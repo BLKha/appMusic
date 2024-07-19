@@ -173,8 +173,7 @@ const app ={
 
         // hàm change volume 
         volume.addEventListener('input',function(e){
-            const seeTime= e.target.value 
-            audio.volume = seeTime 
+          
             
         })
 
