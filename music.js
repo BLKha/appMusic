@@ -9,6 +9,8 @@ const cdThumd = $('.cd-thumb')
 const audio = $('#audio')
 const player = $('.player') 
 const playBtn = $('.btn-toggle-play')
+const volumeBlock=$('.volume-block')
+const volumeBtn=$('.btn-toggle-volume')
 const progress = $('#progress')
 const volume=$('#volume')
 const progressBar = $('.progressBar')
@@ -20,6 +22,7 @@ const playlist =$('.playlist')
 const app ={
     currentIndex : 0,
     isPlaying: false,
+    isVolume:true,
     isRandom : false,
     isRepeat : false,
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY))|| {},
@@ -149,6 +152,38 @@ const app ={
             audio.play()
             }
         }
+        //nút volume
+        volumeBtn.onclick=function(){
+            if(app.isVolume){
+                audio.volumeoff();
+            }
+            else{
+                audio.volumeon();
+            }
+        };
+
+        audio.volumeon=function(){
+            app.isVolume=true;
+               volumeBlock.classList.remove('volumeclick')
+            audio.volume=volume.value/100
+         
+        }
+        audio.volumeoff=function(){
+            app.isVolume=false;
+                volumeBlock.classList.add('volumeclick')
+            audio.volume=0;
+            
+        }
+
+        volume.addEventListener('input',function(e){
+            audio.volume=volume.value/100 
+            volumeBlock.classList.remove('volumeclick')
+            if(audio.volume==0){
+                volumeBlock.classList.add('volumeclick')
+            }
+
+        })
+
             // khi bài hát được play
             audio.onplay = function(){
             app.isPlaying =true
@@ -170,12 +205,11 @@ const app ={
                     progress.value = progressPercent
                     }
                 }
+                audio.valupdate =function(){
 
+                }
         // hàm change volume 
-        volume.addEventListener('input',function(e){
-          
-            
-        })
+
 
 
         progress.addEventListener('mousedown', function() {
@@ -314,7 +348,6 @@ const app ={
 
 
         this.render()
-
         randomBtn.classList.toggle('active',this.isRandom);
         repeatBtn.classList.toggle('active',this.isRepeat);
     }
